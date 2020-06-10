@@ -8,7 +8,7 @@
 <section>
     <jsp:useBean id="meal" type="ru.javawebinar.topjava.model.Meal" scope="request"/>
     <form method="post" action="meals" enctype="application/x-www-form-urlencoded">
-        <input type="hidden" name="uuid" value="${meal.uuid}">
+        <input type="hidden" name="id" value="${meal.id}">
         <br>
         <dl>
             <dt>Дата/Время</dt>
@@ -25,7 +25,7 @@
             <dd><input type="number" name="calories" size=25 value="${meal.calories}"></dd>
         </dl>
         <br>
-        <button type="reset">Отменить</button>
+        <button onclick="window.history.back()">Отменить</button>
         <button type="submit">Сохранить</button>
     </form>
 </section>

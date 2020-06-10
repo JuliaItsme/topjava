@@ -9,7 +9,7 @@
 <section>
     <h21><a href="index.html">Home</a></h21>
     <br>
-    <h21><a href="meals?action=create">Добавить</a></h21>
+    <h15><a href="meals?action=create">Добавить</a></h15>
     <br>
     <table class="table table-striped">
         <thead>
@@ -27,11 +27,12 @@
                 <td>
                     <fmt:parseDate value="${meal.dateTime}" pattern="yyyy-MM-dd'T'HH:mm" var="parsedDateTime"
                                    type="both"/>
-                    <fmt:formatDate pattern="dd.MM.yyyy HH:mm" value="${parsedDateTime}"/></td>
+                    <fmt:formatDate pattern="dd.MM.yyyy HH:mm" value="${parsedDateTime}"/>
+                </td>
                 <td>${meal.description}</td>
                 <td>${meal.calories}</td>
-                <td><a href="meals?uuid=${meal.uuid}&action=update"><img src="img/pencil.png"></a></td>
-                <td><a href="meals?uuid=${meal.uuid}&action=delete"><img src="img/delete.png"></a></td>
+                <td><a href="meals?id=${meal.id}&action=update"><img src="img/pencil.png"></a></td>
+                <td><a href="meals?id=${meal.id}&action=delete"><img src="img/delete.png"></a></td>
             </tr>
         </c:forEach>
     </table>
