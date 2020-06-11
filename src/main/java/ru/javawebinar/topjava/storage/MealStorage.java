@@ -11,14 +11,15 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
-public class MapStorage implements Storage {
-    private static final Logger log = getLogger(MapStorage.class);
+public class MealStorage implements Storage {
+
+    private static final Logger log = getLogger(MealStorage.class);
 
     private final Map<Integer, Meal> mapMeals = new ConcurrentHashMap<>();
 
     private final AtomicInteger atomicId = new AtomicInteger(0);
 
-    public MapStorage() {
+    public MealStorage() {
         MealsUtil.getMeals().forEach(this::save);
     }
 
