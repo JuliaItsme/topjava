@@ -16,8 +16,9 @@ import static java.util.Comparator.*;
 @Repository
 public class InMemoryMealRepository implements MealRepository {
     private static final Logger log = LoggerFactory.getLogger(InMemoryMealRepository.class);
-    private Map<Integer, Meal> repository = new ConcurrentHashMap<>();
-    private AtomicInteger counter = new AtomicInteger(0);
+
+    private final Map<Integer, Meal> repository = new ConcurrentHashMap<>();
+    private final AtomicInteger counter = new AtomicInteger(0);
 
     {
         MealsUtil.MEALS.forEach(meal -> InMemoryMealRepository.this.save(meal, meal.getUserId()));
@@ -33,44 +34,34 @@ public class InMemoryMealRepository implements MealRepository {
             return meal;
         }
         // handle case: update, but not present in storage
-        if (!compareIdAndUserId(meal.getId(), userId))
-            return null;
-        else
-            return repository.computeIfPresent(meal.getId(), (id, oldMeal) -> meal);
+        return compareIdAndUserId(meal, userId) ? repository.computeIfPresent(meal.getId(), (id, oldMeal) -> meal) : null;
     }
 
     @Override
     public boolean delete(int id, int userId) {
         log.info("delete {}", id);
-        if (!compareIdAndUserId(id, userId)) {
-            return false;
-        } else
-            return repository.remove(id) != null;
+        return compareIdAndUserId(repository.get(id), userId) && repository.remove(id) != null;
     }
 
     @Override
     public Meal get(int id, int userId) {
         log.info("get {}", id);
-        if (!compareIdAndUserId(id, userId))
-            return null;
-        else
-            return repository.get(id);
+        Meal meal = repository.get(id);
+        return compareIdAndUserId(meal, userId) ? meal : null;
     }
 
     @Override
     public List<Meal> getAll(int userId) {
         log.info("getAll");
         List<Meal> meals = new ArrayList<>(repository.values());
-        if (meals.isEmpty()) {
-            return Optional.of(meals).orElse(new ArrayList<>());
-        } else {
+        if (!meals.isEmpty()) {
             meals.sort(comparing(Meal::getDateTime, reverseOrder()));
-            return meals;
         }
+        return meals;
     }
 
-    private boolean compareIdAndUserId(int id, int userId) {
-        return repository.get(id) != null && repository.get(id).getUserId().equals(userId);
+    private boolean compareIdAndUserId(Meal meal, int userId) {
+        return meal != null && meal.getUserId().equals(userId);
     }
 }
 
