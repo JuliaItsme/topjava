@@ -19,9 +19,6 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 import static ru.javawebinar.topjava.MealTestData.*;
-import static ru.javawebinar.topjava.MealTestData.USER_ID;
-import static ru.javawebinar.topjava.MealTestData.assertMatch;
-import static ru.javawebinar.topjava.MealTestData.getUpdated;
 
 @ContextConfiguration({
         "classpath:spring/spring-app.xml",
@@ -61,16 +58,16 @@ public class MealServiceTest {
 
     @Test
     public void getBetweenInclusive() throws Exception {
-        List<Meal> mealGetBetweenInclusive = sortMeal(service.getBetweenInclusive(LocalDate.of(2020, Month.MAY, 31),
-                LocalDate.of(2020, Month.MAY, 31), USER_ID));
+        List<Meal> mealGetBetweenInclusive = service.getBetweenInclusive(LocalDate.of(2020, Month.MAY, 31),
+                LocalDate.of(2020, Month.MAY, 31), USER_ID);
         assertMatch(mealGetBetweenInclusive, MEAL_BETWEEN_INCLUSIVE);
     }
 
     @Test
     public void getAll() throws Exception {
-        List<Meal> all = sortMeal(service.getAll(USER_ID));
+        List<Meal> all = service.getAll(USER_ID);
         assertMatch(all, MEAL);
-        List<Meal> allAdmin = sortMeal(service.getAll(ADMIN_ID));
+        List<Meal> allAdmin = service.getAll(ADMIN_ID);
         assertMatch(allAdmin, MEAL_ADMIN);
     }
 
