@@ -116,7 +116,17 @@ public class MealServiceTest {
     }
 
     @Test(expected = NotFoundException.class)
+    public void getNotFoundId() throws Exception {
+        service.get(10, USER_ID);
+    }
+
+    @Test(expected = NotFoundException.class)
     public void deleteNotFound() throws Exception {
         service.delete(MEAL_2.getId(), ADMIN_ID);
+    }
+
+    @Test(expected = NotFoundException.class)
+    public void deleteNotFoundId() throws Exception {
+        service.delete(10, USER_ID);
     }
 }
