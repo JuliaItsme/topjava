@@ -6,6 +6,8 @@ import org.junit.Test;
 import org.junit.rules.Stopwatch;
 import org.junit.runner.Description;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
@@ -32,30 +34,28 @@ import static ru.javawebinar.topjava.UserTestData.USER_ID;
 @RunWith(SpringRunner.class)
 @Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
 public class MealServiceTest {
-
-    private static Map<String, Long> map = new HashMap<>();
+    private static final Logger log = LoggerFactory.getLogger(MealServiceTest.class);
+    private static final Map<String, Long> map = new HashMap<>();
 
     @Rule
     public Stopwatch time = new Stopwatch() {
-        private void logInfo(Description description, long nanos) {
-            String testName = description.getMethodName();
-            map.put(testName, nanos);
-            System.out.println(String.format("Test %s, spent %d microseconds",
-                    testName, TimeUnit.NANOSECONDS.toMicros(nanos)));
-        }
-
         @Override
         protected void finished(long nanos, Description description) {
-            logInfo(description, nanos);
+            String testName = description.getMethodName();
+            Long time = TimeUnit.MILLISECONDS.convert(nanos, TimeUnit.NANOSECONDS);
+            map.put(testName, time);
+            log.info("\n {} {} ms", testName, time);
         }
     };
 
     @AfterClass
     public static void logInfoAfterTests() {
+        StringBuffer sb = new StringBuffer();
         map.forEach((k, v) -> {
-            System.out.println(String.format("Test %s, spent %d microseconds",
-                    k, TimeUnit.NANOSECONDS.toMicros(v)));
+            sb.append(String.format("\n %-23s%5d ms",
+                    k, v));
         });
+        log.info(sb.toString());
     }
 
     @Autowired
