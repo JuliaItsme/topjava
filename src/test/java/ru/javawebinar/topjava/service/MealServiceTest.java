@@ -1,10 +1,6 @@
 package ru.javawebinar.topjava.service;
 
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.TestRule;
-import org.junit.rules.TestWatcher;
-import org.junit.runner.Description;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -30,27 +26,8 @@ import static ru.javawebinar.topjava.UserTestData.USER_ID;
 @Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
 public class MealServiceTest {
 
-    @Rule
-    public TestRule watcher = new TestWatcher(){
-        @Override
-        protected void starting(Description description) {
-            super.starting(description);
-            start = System.nanoTime();
-        }
-
-        @Override
-        protected void finished(Description description) {
-            super.finished(description);
-            end = System.nanoTime()-start;
-        }
-    };
-
-
-
     @Autowired
     private MealService service;
-    private long start;
-    private Object end;
 
     @Test
     public void delete() throws Exception {
