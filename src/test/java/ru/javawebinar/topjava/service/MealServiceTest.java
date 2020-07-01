@@ -1,6 +1,10 @@
 package ru.javawebinar.topjava.service;
 
+import org.junit.AfterClass;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.Stopwatch;
+import org.junit.runner.Description;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -12,6 +16,9 @@ import ru.javawebinar.topjava.util.exception.NotFoundException;
 
 import java.time.LocalDate;
 import java.time.Month;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.assertThrows;
 import static ru.javawebinar.topjava.MealTestData.*;
@@ -25,6 +32,31 @@ import static ru.javawebinar.topjava.UserTestData.USER_ID;
 @RunWith(SpringRunner.class)
 @Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
 public class MealServiceTest {
+
+    private static Map<String, Long> map = new HashMap<>();
+
+    @Rule
+    public Stopwatch time = new Stopwatch() {
+        private void logInfo(Description description, long nanos) {
+            String testName = description.getMethodName();
+            map.put(testName, nanos);
+            System.out.println(String.format("Test %s, spent %d microseconds",
+                    testName, TimeUnit.NANOSECONDS.toMicros(nanos)));
+        }
+
+        @Override
+        protected void finished(long nanos, Description description) {
+            logInfo(description, nanos);
+        }
+    };
+
+    @AfterClass
+    public static void logInfoAfterTests() {
+        map.forEach((k, v) -> {
+            System.out.println(String.format("Test %s, spent %d microseconds",
+                    k, TimeUnit.NANOSECONDS.toMicros(v)));
+        });
+    }
 
     @Autowired
     private MealService service;
@@ -79,7 +111,7 @@ public class MealServiceTest {
     }
 
     @Test
-    public void updateNotOwn() throws Exception{
+    public void updateNotOwn() throws Exception {
         assertThrows(NotFoundException.class, () -> service.update(MEAL1, ADMIN_ID));
     }
 
