@@ -9,12 +9,14 @@ import org.springframework.stereotype.Repository;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
+import static ru.javawebinar.topjava.Profiles.HSQL_DB;
+
 @Repository
-@Profile("hsqldb")
-public class HSQLDBJdbcMealRepository extends AbstractJdbcMealRepository<Timestamp> {
+@Profile(HSQL_DB)
+public class HsqldbJdbcMealRepository extends AbstractJdbcMealRepository<Timestamp> {
 
     @Autowired
-    public HSQLDBJdbcMealRepository(JdbcTemplate jdbcTemplate, NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
+    public HsqldbJdbcMealRepository(JdbcTemplate jdbcTemplate, NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
         super(jdbcTemplate, namedParameterJdbcTemplate);
     }
 

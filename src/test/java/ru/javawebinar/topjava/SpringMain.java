@@ -20,9 +20,11 @@ public class SpringMain {
         //https://coderoad.ru/12194614/Spring-getEnvironment
         try (GenericXmlApplicationContext appCtx = new GenericXmlApplicationContext()) {
             appCtx.getEnvironment().setActiveProfiles(Profiles.getActiveDbProfile(), Profiles.REPOSITORY_IMPLEMENTATION);
-            appCtx.load("spring/spring-app.xml", "spring/inmemory.xml");
+            appCtx.load("spring/spring-app.xml", "spring/spring-db.xml");
             appCtx.refresh();
+
             System.out.println("Bean definition names: " + Arrays.toString(appCtx.getBeanDefinitionNames()));
+
             AdminRestController adminUserController = appCtx.getBean(AdminRestController.class);
             adminUserController.create(new User(null, "userName", "email@mail.ru", "password", Role.ADMIN));
             System.out.println();
