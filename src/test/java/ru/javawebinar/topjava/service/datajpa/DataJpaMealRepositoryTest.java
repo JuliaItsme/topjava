@@ -16,14 +16,14 @@ import static ru.javawebinar.topjava.UserTestData.*;
 public class DataJpaMealRepositoryTest extends AbstractMealServiceTest {
 
     @Test
-    public void getMealWithUser() throws Exception {
-        Meal meal = service.getMealWithUser(ADMIN_MEAL_ID, ADMIN_ID);
+    public void getWithUser() throws Exception {
+        Meal meal = service.getWithUser(ADMIN_MEAL_ID, ADMIN_ID);
         MEAL_MATCHER.assertMatch(meal, ADMIN_MEAL1);
         USER_MATCHER.assertMatch(meal.getUser(), ADMIN);
     }
 
     @Test
-    public void getMealWithUserNotFound() throws Exception {
-        assertThrows(NotFoundException.class, () -> service.getMealWithUser(NOT_FOUND, USER_ID));
+    public void getWithUserNotFound() throws Exception {
+        assertThrows(NotFoundException.class, () -> service.getWithUser(NOT_FOUND, USER_ID));
     }
 }
