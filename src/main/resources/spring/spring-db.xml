@@ -66,13 +66,19 @@
         <bean id="namedJdbcTemplate" class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">
             <constructor-arg ref="jdbcTemplate"/>
         </bean>
-    </beans>
 
-    <beans profile="jpa,datajpa">
-        <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"
-              p:dataSource-ref="dataSource"
-              p:packagesToScan="ru.javawebinar.**.model">
-            <!--p:persistenceUnitName="persistenceUnit">-->
+        <!-- Initialization for TransactionManager https://habr.com/ru/company/otus/blog/431508/ -->
+        <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+            <property name="dataSource"  ref="dataSource" />
+        </bean>
+        <tx:annotation-driven proxy-target-class="true" transaction-manager="transactionManager"/>
+     </beans>
+
+     <beans profile="jpa,datajpa">
+         <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"
+               p:dataSource-ref="dataSource"
+               p:packagesToScan="ru.javawebinar.**.model">
+             <!--p:persistenceUnitName="persistenceUnit">-->
 
             <property name="jpaPropertyMap">
                 <map>
