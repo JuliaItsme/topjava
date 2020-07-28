@@ -55,6 +55,7 @@ public abstract class AbstractMealController {
         service.update(meal, userId);
     }
 
+
     /**
      * <ol>Filter separately
      * <li>by date</li>
@@ -62,11 +63,19 @@ public abstract class AbstractMealController {
      * </ol>
      */
     public List<MealTo> getBetween(@Nullable LocalDate startDate, @Nullable LocalTime startTime,
-                                            @Nullable LocalDate endDate, @Nullable LocalTime endTime) {
+                                   @Nullable LocalDate endDate, @Nullable LocalTime endTime) {
         int userId = SecurityUtil.authUserId();
         log.info("getBetween dates({} - {}) time({} - {}) for user {}", startDate, endDate, startTime, endTime, userId);
 
         List<Meal> mealsDateFiltered = service.getBetweenInclusive(startDate, endDate, userId);
         return MealsUtil.getFilteredTos(mealsDateFiltered, SecurityUtil.authUserCaloriesPerDay(), startTime, endTime);
+    }
+
+    public List<MealTo> getBetweenDate(@Nullable LocalDate startDate, @Nullable LocalDate endDate) {
+        return getBetween(startDate, null, endDate, null);
+    }
+
+    public List<MealTo> getBetweenTime(@Nullable LocalTime startTime, @Nullable LocalTime endTime) {
+        return getBetween(null, startTime, null, endTime);
     }
 }
