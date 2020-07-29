@@ -2,20 +2,17 @@ package ru.javawebinar.topjava;
 
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.to.MealTo;
-import ru.javawebinar.topjava.util.MealsUtil;
-import ru.javawebinar.topjava.web.SecurityUtil;
 
-import java.time.LocalTime;
 import java.time.Month;
-import java.util.Arrays;
 import java.util.List;
 
 import static java.time.LocalDateTime.of;
 import static ru.javawebinar.topjava.model.AbstractBaseEntity.START_SEQ;
+import static ru.javawebinar.topjava.util.MealsUtil.createTo;
 
 public class MealTestData {
     public static TestMatcher<Meal> MEAL_MATCHER = TestMatcher.usingFieldsComparator(Meal.class, "user");
-    public static TestMatcher<MealTo> MEALTO_MATCHER = TestMatcher.usingFieldsComparator(MealTo.class, "excess");
+    public static TestMatcher<MealTo> MEALTO_MATCHER = TestMatcher.usingFieldsComparator(MealTo.class);
 
     public static final int NOT_FOUND = 10;
     public static final int MEAL1_ID = START_SEQ + 2;
@@ -32,8 +29,8 @@ public class MealTestData {
     public static final Meal ADMIN_MEAL2 = new Meal(ADMIN_MEAL_ID + 1, of(2020, Month.JANUARY, 31, 21, 0), "Админ ужин", 1500);
 
     public static final List<Meal> MEALS = List.of(MEAL7, MEAL6, MEAL5, MEAL4, MEAL3, MEAL2, MEAL1);
-    public static final List<MealTo> MEALS_DATE = MealsUtil.getFilteredTos(Arrays.asList(MEAL3, MEAL2, MEAL1), SecurityUtil.authUserCaloriesPerDay(), null, null);
-    public static final List<MealTo> MEALS_TIME = MealsUtil.getFilteredTos(Arrays.asList(MEAL7, MEAL6, MEAL3, MEAL2), SecurityUtil.authUserCaloriesPerDay(), LocalTime.of(13, 00), LocalTime.of(21, 00));
+    public static final List<MealTo> MEALSTO_BETWEEN = List.of(createTo(MEAL3, false), createTo(MEAL2, false));
+    public static final List<MealTo> MEALS_TO = List.of(createTo(MEAL7, true), createTo(MEAL6, true), createTo(MEAL5, true),createTo(MEAL4, true),createTo(MEAL3, false),createTo(MEAL2, false), createTo(MEAL1, false));
 
     public static Meal getNew() {
         return new Meal(null, of(2020, Month.FEBRUARY, 1, 18, 0), "Созданный ужин", 300);

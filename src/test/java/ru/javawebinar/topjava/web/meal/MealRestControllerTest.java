@@ -8,13 +8,9 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import ru.javawebinar.topjava.MealTestData;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.service.MealService;
-import ru.javawebinar.topjava.util.DateTimeUtil;
 import ru.javawebinar.topjava.web.AbstractControllerTest;
 import ru.javawebinar.topjava.web.json.JsonUtil;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -79,26 +75,15 @@ public class MealRestControllerTest extends AbstractControllerTest {
     }
 
     @Test
-    void getMealBetweenDate() throws Exception {
-        String startDate = DateTimeUtil.toString(LocalDate.of(2020, Month.JANUARY, 29));
-        String endDate = DateTimeUtil.toString(LocalDate.of(2020, Month.JANUARY, 30));
-
-        perform(MockMvcRequestBuilders.get(String.format("%s/filterDate?startDate=%s&endDate=%s", REST_URL_MEAL, startDate, endDate)))
+    void getBetween() throws Exception {
+        perform(MockMvcRequestBuilders.get(REST_URL_MEAL + "/" + "filter")
+                .param("startDate", "2020-01-29")
+                .param("startTime", "13:00")
+                .param("endDate", "2020-01-30")
+                .param("endTime", "21:00"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(MEALTO_MATCHER.contentJson(MEALS_DATE));
-    }
-
-    @Test
-    void getMealBetweenTime() throws Exception {
-        String startTime = DateTimeUtil.toString(LocalTime.of(13, 00));
-        String endTime = DateTimeUtil.toString(LocalTime.of(21, 00));
-
-        perform(MockMvcRequestBuilders.get(String.format("%s/filterTime?startTime=%s&endTime=%s", REST_URL_MEAL, startTime, endTime)))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(MEALTO_MATCHER.contentJson(MEALS_TIME));
+                .andExpect(MEALTO_MATCHER.contentJson(MEALSTO_BETWEEN));
     }
 }
