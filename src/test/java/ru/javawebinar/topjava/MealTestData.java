@@ -30,7 +30,14 @@ public class MealTestData {
 
     public static final List<Meal> MEALS = List.of(MEAL7, MEAL6, MEAL5, MEAL4, MEAL3, MEAL2, MEAL1);
     public static final List<MealTo> MEALSTO_BETWEEN = List.of(createTo(MEAL3, false), createTo(MEAL2, false));
-    public static final List<MealTo> MEALS_TO = List.of(createTo(MEAL7, true), createTo(MEAL6, true), createTo(MEAL5, true),createTo(MEAL4, true),createTo(MEAL3, false),createTo(MEAL2, false), createTo(MEAL1, false));
+    public static final List<MealTo> MEALS_TO = List.of(
+            createTo(MEAL7, true),
+            createTo(MEAL6, true),
+            createTo(MEAL5, true),
+            createTo(MEAL4, true),
+            createTo(MEAL3, false),
+            createTo(MEAL2, false),
+            createTo(MEAL1, false));
 
     public static Meal getNew() {
         return new Meal(null, of(2020, Month.FEBRUARY, 1, 18, 0), "Созданный ужин", 300);

@@ -55,7 +55,6 @@ public abstract class AbstractMealController {
         service.update(meal, userId);
     }
 
-
     /**
      * <ol>Filter separately
      * <li>by date</li>

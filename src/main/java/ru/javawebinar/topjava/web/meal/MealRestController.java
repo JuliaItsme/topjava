@@ -20,19 +20,19 @@ public class MealRestController extends AbstractMealController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteRest(@PathVariable int id) {
+    public void delete(@PathVariable int id) {
         super.delete(id);
     }
 
     //  https://www.codeflow.site/ru/article/spring-response-entity
     @GetMapping("/{id}")
-    public Meal getRest(@PathVariable int id) {
+    public Meal get(@PathVariable int id) {
         return ResponseEntity.ok(super.get(id)).getBody();
     }
 
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updateRest(@RequestBody Meal meal) {
+    public void update(@RequestBody Meal meal) {
         super.update(meal, meal.getId());
     }
 
@@ -45,13 +45,12 @@ public class MealRestController extends AbstractMealController {
         return ResponseEntity.created(uriOfNewResource).body(mealNew);
     }
 
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<MealTo> getAllRest() {
+    public List<MealTo> getAll() {
         return ResponseEntity.ok(super.getAll()).getBody();
     }
 
     @GetMapping("/filter")
-    public List<MealTo> getBetweenRest(@RequestParam LocalDate startDate, @RequestParam LocalTime startTime, @RequestParam LocalDate endDate, @RequestParam LocalTime endTime) {
+    public List<MealTo> getBetween(@RequestParam LocalDate startDate, @RequestParam LocalTime startTime, @RequestParam LocalDate endDate, @RequestParam LocalTime endTime) {
         return ResponseEntity.ok(super.getBetween(startDate, startTime, endDate, endTime)).getBody();
     }
 }
