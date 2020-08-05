@@ -1,25 +1,19 @@
-// $(document).ready(function () {
+/ $(document).ready(function () {
 $(function () {
     makeEditable({
-            ajaxUrl: "admin/users/",
+            ajaxUrl: "ajax/meals/",
             datatableApi: $("#datatable").DataTable({
                 "paging": false,
                 "info": true,
                 "columns": [
                     {
-                        "data": "name"
+                        "data": "dateTime"
                     },
                     {
-                        "data": "email"
+                        "data": "description"
                     },
                     {
-                        "data": "roles"
-                    },
-                    {
-                        "data": "enabled"
-                    },
-                    {
-                        "data": "registered"
+                        "data": "calories"
                     },
                     {
                         "defaultContent": "Edit",
@@ -33,23 +27,25 @@ $(function () {
                 "order": [
                     [
                         0,
-                        "asc"
+                        "desc"
                     ]
                 ]
-            })
+            }),
         }
     );
 });
 
-function enable(checkbox) {
-    let enabled = checkbox.is(":checked");
+function filter() {
     $.ajax({
-        type: "POST",
-        url: context.ajaxUrl + id,
-        data: form.serialize()
+        type: "GET",
+        url: context.ajaxUrl + "filter",
+        data: $("#filterForm").serialize()
     }).done(function () {
-        checkbox.closest("tr").attr("data-userEnabled", enabled);
-        updateTable();
-        successNoty(enable ? "User is enable" : "User is disable");
-    });
+        updateTable(data)
+        successNoty("Filtered");
+    })
+}
+
+function clear() {
+    updateTable();
 }
