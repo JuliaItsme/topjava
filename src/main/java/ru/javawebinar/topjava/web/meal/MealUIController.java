@@ -41,7 +41,7 @@ public class MealUIController extends AbstractMealController {
     @PostMapping
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public ResponseEntity<String> createOrUpdate(@Valid MealTo mealTo, BindingResult result) {
-        //@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dateTime,
+        //@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
         if (result.hasErrors()) {
             String errorFieldsMsg = result.getFieldErrors().stream()
                     .map(fe -> String.format("[%s] %s", fe.getField(), fe.getDefaultMessage()))

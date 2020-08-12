@@ -1,10 +1,36 @@
-var mealAjaxUrl = "ajax/profile/meals/";
+const mealAjaxUrl = "profile/meals/";
+
+$('.datetimepicker').datetimepicker({
+    format: 'Y-m-d H:i'
+});
+
+$('.datepicker').datetimepicker({
+    timepicker: false,
+    format: 'Y-m-d'
+});
+
+$('.timepicker').datetimepicker({
+    datepicker: false,
+    format: 'H:i'
+});
+
+$.ajaxSetup({
+    converters: {
+        "text json_date": function (stringData) {
+            let jsonDate = JSON.parse(stringData);
+            $(jsonDate).each(function () {
+                this.dateTime = this.dateTime.replace('T', ' ').substr(0, 16);
+            });
+            return jsonDate;
+        }
+    }
+});
 
 function updateFilteredTable() {
     $.ajax({
         type: "GET",
         dataType: 'json_date',
-        url: mealAjaxUrl + "filter",
+        url: mealAjaxUrl + 'filter',
         data: $("#filter").serialize()
     }).done(updateTableByData);
 }
@@ -20,6 +46,7 @@ $(function () {
         datatableApi: $("#datatable").DataTable({
             "ajax": {
                 url: mealAjaxUrl,
+                dataType: 'json_date',
                 "dataSrc": ""
             },
             "paging": false,
@@ -57,16 +84,4 @@ $(function () {
         }),
         updateTable: updateFilteredTable
     });
-});
-
-$.ajaxSetup({
-    converters: {
-        "text json_date": function (stringData) {
-            var json = JSON.parse(stringData);
-            $(json).each(function () {
-                this.dateTime = this.dateTime.replace('T', ' ').substr(0, 16);
-            });
-            return json;
-        }
-    }
 });

@@ -1,18 +1,4 @@
-var context, form;
-
-$('.datetimepicker').datetimepicker({
-    format: 'Y-m-d H:i'
-});
-
-$('.datepicker').datetimepicker({
-    timepicker: false,
-    format: 'Y-m-d'
-});
-
-$('.timepicker').datetimepicker({
-    datepicker: false,
-    format: 'H:i'
-});
+let context, form;
 
 function makeEditable(ctx) {
     context = ctx;
@@ -69,7 +55,7 @@ function save() {
     });
 }
 
-var failedNote;
+let failedNote;
 
 function closeNoty() {
     if (failedNote) {
